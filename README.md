@@ -1,4 +1,4 @@
-# Ratings plugin
+# Ratings widget
 
 With this widget you are a able to add a star rating widget to your project.
 
