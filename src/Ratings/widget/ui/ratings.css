@@ -1,0 +1,5 @@
+/* widget wrapper */
+.ratings_widget li {
+	float: left;
+	display: block;
+}

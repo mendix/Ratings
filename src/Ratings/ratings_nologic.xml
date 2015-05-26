@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="Ratings.widget.ratings_nologic" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+  <name>Ratings widget (No registering)</name>
+  <description>This widget lets you manipulate an Integer attribute using a vote widget, but does not perform any further logic. </description>
+  <icon>
+  iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAANkE3LLa
+  AgAAAkxJREFUeJyVkttLUwEcxz/n7OLm5tzcxHlhXjLDsUg0xYweeurF8M1kkaiJ
+  L0Jv9T9UFERGEA578EENzMqXCkGwgU8qgRuIYtOpXZyXM912djmnl4wSJ/h9/H0v
+  /H5ffnAKWusM3rY6g/c0zWkQpl52zU298M4BwpndNXZto7wxrcgro0qNncZsOjEb
+  0dN+rVdfckHQF5cJPa3VvWddwB7yv4qo8oqq7nxSQ+PtEcB+klB746K5rbyiqiRH
+  r7PY7TZrnslkrakodLs8lwuQ1uAwjKvSUfDhfv740mo8ED1U9yJRYU9OCVJoN70p
+  3LrieOjzPX1gqr0DxIA4ZCTYXYPYOkSXYX8BYosgSSCJIJg43Etx9/XWI81iODb1
+  dnxyvcF1eLXMfT6X6C/YD0F8E6QAbM9AZBb2IhAVQGtldikdaR0I35tezjzWAGwf
+  KPOjb/x+ZzpQf8njdAryNkT88PMzRAOQSEDKiKIrZehLasE78K1zU1LfAWiOykjC
+  +vuZ1cnavO/XPVXbxYQ/QuIHyBmQDWByMTqfN9/5fPFmUmHxb4nHSt0oygmLbHyF
+  WALSGkgZIGmETIqiXEUENv41/PcHZTY8Dc4DNzsZSFnA2gC2esiY4CBBQ1HSXWbD
+  kzWgqVLXYtEadIiFbMkupetJaKjz2crQllioYDZg0cd1TZW5LVm/Z9CbP6YOn1NH
+  +kuC5Q6x42he7hA7RvpLg+pwtTp42zqWzW+Z6LMEu5uNPsB1Au/qbjb6Jvryg4Dl
+  pABznpaW42cdg/hHYz4a/Ablkdwn65WLsgAAAABJRU5ErkJggg==
+  </icon>
+  <properties>
+    <property key="voteEnabled" type="boolean" defaultValue="true">
+      <caption>Voting enabled</caption>
+      <category>Behavior</category>
+      <description>This boolean will determine if the widget is read-only or not.</description>
+    </property>
+			<property key="standardImage" type="image">
+      <caption>Unstarred image</caption>
+      <category>Appearance</category>
+      <description>This is the default, unchecked image.</description>
+    </property>
+	<property key="mouseoverImage" type="image">
+      <caption>Starred image</caption>
+      <category>Appearance</category>
+      <description>This is the checked image.</description>
+    </property>
+	<property key="name" type="attribute">
+      <caption>Vote Attribute</caption>
+      <category>Data source</category>
+      <description>The attribute that registers the vote. Requires an Integer.</description>
+	  <attributeTypes>
+		<attributeType name="Integer"/> 
+      </attributeTypes>
+    </property>
+  </properties>
+</widget>
