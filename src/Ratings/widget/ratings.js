@@ -2,10 +2,10 @@
 /*global mx, define, require, browser, devel, console, document, jQuery, ga, window, mxui, location */
 /*mendix */
 /*
-    GoogleAnalytics
+    Ratings
     ========================
 
-    @file      : GoogleAnalytics.js
+    @file      : Ratings.js
     @version   : 2.0.0
     @author    : Gerhard Richard Edens
     @date      : Wed, 20 May 2015 12:17:18 GMT
