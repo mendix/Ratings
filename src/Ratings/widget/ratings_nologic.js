@@ -2,10 +2,10 @@
 /*global mx, define, require, browser, devel, console, document, jQuery, ga, window, mxui, location */
 /*mendix */
 /*
-    GoogleAnalytics
+    RatingsNoLogic
     ========================
 
-    @file      : GoogleAnalytics.js
+    @file      : ratings_nologic.js
     @version   : 2.0.0
     @author    : Gerhard Richard Edens
     @date      : Wed, 20 May 2015 12:17:18 GMT
@@ -81,7 +81,7 @@ define([
             ratingsList = mxui.dom.create("ul");
 
             if (this.voteEnabled === true) {
-                this.ratingsListEvent = this.connect(ratingsList, "onmouseleave", this.hitch(this, this.showCurrentValue));
+                this.ratingsListEvent = this.connect(ratingsList, "onmouseleave", lang.hitch(this, this.showCurrentValue));
             }
             for (i = 1; i <= 5; i++) {
                 imgNode = mxui.dom.create("img",{"class": "ratings_image"});
@@ -90,9 +90,9 @@ define([
                 this.mouseoverArray[i-1] = {};
                 this.mouseoverArray[i-1].element = imgNode;
                 if (this.voteEnabled === true) { //can vote and not voted before
-                    this.mouseoverArray[i-1].handlein = this.connect(imgNode, "onmouseenter", this.hitch(this, this.displayImages, i));
-                    this.mouseoverArray[i-1].handleout = this.connect(imgNode, "onmouseleave", this.hitch(this, this.displayImages, i-1));
-                    this.mouseoverArray[i-1].handleclick = this.connect(ratingsLi, "onclick", this.hitch(this, this.setRating, i));
+                    this.mouseoverArray[i-1].handlein = this.connect(imgNode, "onmouseenter", lang.hitch(this, this.displayImages, i));
+                    this.mouseoverArray[i-1].handleout = this.connect(imgNode, "onmouseleave", lang.hitch(this, this.displayImages, i-1));
+                    this.mouseoverArray[i-1].handleclick = this.connect(ratingsLi, "onclick", lang.hitch(this, this.setRating, i));
                 }
                 ratingsList.appendChild(ratingsLi);
             }
