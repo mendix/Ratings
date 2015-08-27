@@ -42,7 +42,7 @@ define([
 
         postCreate : function(){
             console.log(this.id + ".postCreate");
-            this.root = location.protocol + "//" + location.host;
+            this.root = window.mx.appUrl;
 
             this.attrValues = [];
             this.connectArray = [];

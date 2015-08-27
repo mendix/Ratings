@@ -35,7 +35,7 @@ define([
 
         divNode : "",
         mouseoverArray : null,
-        root : location.protocol + "//" + location.host,
+        root : window.mx.appUrl,
         ratingsListEvent : "",	
 
         oldvalue : 0,
