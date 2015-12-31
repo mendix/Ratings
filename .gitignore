@@ -6,3 +6,8 @@ test/.project
 *.tmp
 *.lock
 .idea/
+
+*.bak
+dist/
+node_modules/
+*DS_Store*
