@@ -24,7 +24,6 @@ define([
             pathName : "",
 
             postCreate : function(){
-                logger.level(logger.DEBUG);
                 logger.debug(this.id + ".postCreate");
                 this.root = window.mx.appUrl;
 
