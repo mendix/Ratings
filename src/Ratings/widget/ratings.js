@@ -23,6 +23,8 @@ define([
             pathAttr : "",
             pathName : "",
 
+            _contextObj: null,
+
             postCreate : function(){
                 logger.debug(this.id + ".postCreate");
                 this.root = window.mx.appUrl;
@@ -34,8 +36,10 @@ define([
                 this.pathName = this.voteName.split("/");
             },
 
-            showRatings : function(mxApp){
+            showRatings : function(callback){
                 logger.debug(this.id + ".showRatings");
+
+                var mxApp = this._contextObj;
 
                 /* CLEAR ALL NODES */
                 domConstruct.empty(this.divNode);
@@ -45,15 +49,11 @@ define([
                 showCount = 0;
                 showVote = 0;
 
-                if (mxApp instanceof Array) {
-                    mxApp = mxApp[0];
-                }
-
                 ratingsList = "";
 
                 //retrieve and calculate the vote values
-                showTotal = mxApp.get(this.ratingsTotal);
-                showCount = mxApp.get(this.ratingsCount);
+                showTotal = parseInt(mxApp.get(this.ratingsTotal), 10);
+                showCount = parseInt(mxApp.get(this.ratingsCount), 10);
                 if (showCount === 0) {
                     showVote = 1;
                 } else {
@@ -82,10 +82,12 @@ define([
                     ratingsList.appendChild(ratingsLi);
                 }
                 this.divNode.appendChild(ratingsList);
+
+                mendix.lang.nullExec(callback);
             },
 
             setMouseOver : function (iterator) {
-                logger.debug(this.id + ".setMouseOver");
+                logger.debug(this.id + ".setMouseOver", iterator);
 
                 var j,k;
 
@@ -162,8 +164,6 @@ define([
 
                             this._safeSequence(app);
                             this._safeSequence(voteObject);
-                            //app.saveSequence();
-                            //voteObject.saveSequence();
                         },
                         user,
                         vote,
@@ -191,30 +191,25 @@ define([
                 });
             },
 
-
             mouseenterEvent : function(enterIterator, event) {
                 logger.debug(this.id + ".mouseenterEvent");
-
                 this.setMouseOver(enterIterator-1);
             },
 
             mouseleaveEvent : function(showVote, event) {
-                logger.debug(this.id + ".mouseleaveEvent");
-
+                logger.debug(this.id + ".mouseleaveEvent", arguments);
                 this.setMouseOver(showVote-1);
             },
 
-            applyContext : function(context, callback){
-                logger.debug(this.id + ".applyContext", context);
-                if (context) {
-                    mx.data.get({
-                        guid: context.getTrackId(),
-                        callback: lang.hitch(this, this.showRatings)
-                    });
+            update: function (obj, callback) {
+                logger.debug(this.id + ".update");
+                if (obj) {
+                    this._contextObj = obj;
+                    this.showRatings(callback);
                 } else {
                     console.warm(this.id + ".applyContext received empty context");
+                    callback();
                 }
-                callback();
             },
 
             uninitialize : function(){
