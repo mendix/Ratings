@@ -25,13 +25,15 @@ define([
 
             standardImage: null,
             mouseoverImage: null,
-            halfImage: null,
+            halfImage: "",
 
             _contextObj: null,
 
             postCreate : function(){
                 logger.debug(this.id + ".postCreate");
                 this.root = window.mx.appUrl;
+
+                console.log(this.halfImage);
 
                 this.attrValues = [];
                 this.connectArray = [];
@@ -60,7 +62,7 @@ define([
                 showCount = parseInt(mxApp.get(this.ratingsCount), 10);
                 if (showCount === 0) {
                     showVote = 1;
-                } else if (this.halfImage !== null) {
+                } else if (this.halfImage !== "") {
                     showVote = ((showTotal / showCount) * 2).toFixed() / 2;
                 } else {
                     showVote = number.round((showTotal / showCount));
@@ -73,7 +75,7 @@ define([
                 for (i = 1; i <= 5; i++) {
                     imgNode = mxui.dom.create("img",{"class": "ratings_image"});
                     if (i > showVote) {
-                        if (this.halfImage !== null && (i - showVote === 0.5)) {
+                        if (this.halfImage !== "" && (i - showVote === 0.5)) {
                             domAttr.set(imgNode, "src", this._getImagePath(this.halfImage));
                         } else {
                             domAttr.set(imgNode, "src", this._getImagePath(this.standardImage));
@@ -106,7 +108,7 @@ define([
                 }
 
                 for (k = 4; k > iterator; k--) {
-                    if (this.halfImage !== null && (k - iterator === 0.5)) {
+                    if (this.halfImage !== "" && (k - iterator === 0.5)) {
                         this.mouseoverArray[k].element.src = this._getImagePath(this.halfImage);
                     } else {
                         this.mouseoverArray[k].element.src = this._getImagePath(this.standardImage);
