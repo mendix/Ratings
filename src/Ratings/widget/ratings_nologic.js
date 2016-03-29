@@ -128,7 +128,6 @@ define([
                 }
             },
 
-
             mouseleaveEvent : function(showVote, event) {
                 logger.debug(this.id + ".mouseleaveEvent");
                 this.setMouseOver(showVote-1);

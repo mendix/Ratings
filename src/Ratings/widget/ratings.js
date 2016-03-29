@@ -23,6 +23,10 @@ define([
             pathAttr : "",
             pathName : "",
 
+            standardImage: null,
+            mouseoverImage: null,
+            halfImage: null,
+
             _contextObj: null,
 
             postCreate : function(){
@@ -56,6 +60,8 @@ define([
                 showCount = parseInt(mxApp.get(this.ratingsCount), 10);
                 if (showCount === 0) {
                     showVote = 1;
+                } else if (this.halfImage !== null) {
+                    showVote = ((showTotal / showCount) * 2).toFixed() / 2;
                 } else {
                     showVote = number.round((showTotal / showCount));
                 }
@@ -67,9 +73,13 @@ define([
                 for (i = 1; i <= 5; i++) {
                     imgNode = mxui.dom.create("img",{"class": "ratings_image"});
                     if (i > showVote) {
-                        domAttr.set(imgNode, "src", (this.root + "/" + this.standardImage));
+                        if (this.halfImage !== null && (i - showVote === 0.5)) {
+                            domAttr.set(imgNode, "src", this._getImagePath(this.halfImage));
+                        } else {
+                            domAttr.set(imgNode, "src", this._getImagePath(this.standardImage));
+                        }
                     } else {
-                        domAttr.set(imgNode, "src", (this.root + "/" + this.mouseoverImage));
+                        domAttr.set(imgNode, "src", this._getImagePath(this.mouseoverImage));
                     }
                     ratingsLi = mxui.dom.create("li", imgNode);
                     if (this.voteEnabled === true) {
@@ -92,13 +102,20 @@ define([
                 var j,k;
 
                 for (j = 0; j <= iterator; j++) {
-                    this.mouseoverArray[j].element.src = this.root + "/" + this.mouseoverImage;
+                    this.mouseoverArray[j].element.src = this._getImagePath(this.mouseoverImage);
                 }
 
                 for (k = 4; k > iterator; k--) {
-                    this.mouseoverArray[k].element.src = this.root + "/" + this.standardImage;
+                    if (this.halfImage !== null && (k - iterator === 0.5)) {
+                        this.mouseoverArray[k].element.src = this._getImagePath(this.halfImage);
+                    } else {
+                        this.mouseoverArray[k].element.src = this._getImagePath(this.standardImage);
+                    }
                 }
+            },
 
+            _getImagePath : function (img) {
+                return this.root + "/" + img;
             },
 
             onclickRating : function(count, mxApp, event) {
@@ -197,7 +214,7 @@ define([
             },
 
             mouseleaveEvent : function(showVote, event) {
-                logger.debug(this.id + ".mouseleaveEvent", arguments);
+                logger.debug(this.id + ".mouseleaveEvent", showVote);
                 this.setMouseOver(showVote-1);
             },
 
