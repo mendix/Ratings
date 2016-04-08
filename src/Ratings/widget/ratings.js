@@ -33,8 +33,6 @@ define([
                 logger.debug(this.id + ".postCreate");
                 this.root = window.mx.appUrl;
 
-                console.log(this.halfImage);
-
                 this.attrValues = [];
                 this.connectArray = [];
                 this.mouseoverArray = [];
