@@ -57,7 +57,6 @@ define([
             },
 
             postCreate : function(){
-                logger.level(logger.DEBUG);
                 logger.debug(this.id + ".postCreate");
 
                 var ratingsList, i, imgNode, ratingsLi;
