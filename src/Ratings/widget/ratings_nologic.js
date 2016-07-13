@@ -1,15 +1,15 @@
-/*jslint white:true, nomen: true, plusplus: true */
-/*global mx, define, require, browser, devel, console, document, jQuery, ga, window, mxui, location */
-
 define([
-    "dojo/_base/declare", "mxui/widget/_WidgetBase",
-    "mxui/dom", "dojo/dom", "dojo/query", "dojo/dom-prop", "dojo/dom-geometry", "dojo/dom-attr", "dojo/dom-class", "dojo/dom-style", "dojo/dom-construct", "dojo/on", "dojo/_base/lang", "dojo/text", "dojo/number",
+    "dojo/_base/declare",
+    "mxui/widget/_WidgetBase",
+    "dijit/_TemplatedMixin",
+    "dojo/dom-attr",
+    "dojo/dom-class",
+    "dojo/_base/lang",
     "dojo/text!Ratings/widget/templates/ratings.html"
-], function (declare, _WidgetBase,
-    domMx, dom, domQuery, domProp, domGeom, domAttr, domClass, domStyle, domConstruct, on, lang, text, number, dojoArray, widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, domAttr, domClass, lang, widgetTemplate) {
         "use strict";
 
-        return declare("Ratings.widget.ratings_nologic", [_WidgetBase], {
+        return declare("Ratings.widget.ratings_nologic", [ _WidgetBase, _TemplatedMixin ], {
 
             name : "",
             voteEnabled : false,
@@ -59,19 +59,17 @@ define([
             postCreate : function(){
                 logger.debug(this.id + ".postCreate");
 
-                var ratingsList, i, imgNode, ratingsLi;
-
                 this.mouseoverArray = [];
 
                 domClass.add(this.domNode, "ratings_widget");
-                ratingsList = mxui.dom.create("ul");
+                var ratingsList = mxui.dom.create("ul");
 
                 if (this.voteEnabled === true) {
                     this.ratingsListEvent = this.connect(ratingsList, "onmouseleave", lang.hitch(this, this.showCurrentValue));
                 }
-                for (i = 1; i <= 5; i++) {
-                    imgNode = mxui.dom.create("img",{"class": "ratings_image"});
-                    ratingsLi = mxui.dom.create("li", imgNode);
+                for (var i = 1; i <= 5; i++) {
+                    var imgNode = mxui.dom.create("img",{"class": "ratings_image"}),
+                        ratingsLi = mxui.dom.create("li", imgNode);
 
                     this.mouseoverArray[i-1] = {};
                     this.mouseoverArray[i-1].element = imgNode;
@@ -94,22 +92,21 @@ define([
 
             displayImages : function (iterator) {
                 logger.debug(this.id + ".displayImages");
-                var j, k;
+
                 if (iterator < 0 || iterator > 5) {
                     return;
                 }
 
-                for (j = 0; j <= iterator-1; j++) {
+                for (var j = 0; j <= iterator-1; j++) {
                     domAttr.set(this.mouseoverArray[j].element, "src", this.root + "/" + this.mouseoverImage);
                 }
 
-                for (k = 4; k > iterator-1; k--) {
+                for (var k = 4; k > iterator-1; k--) {
                     domAttr.set(this.mouseoverArray[k].element, "src", this.root + "/" + this.standardImage);
                 }
             },
 
             setRating : function(count) {
-                var i;
                 logger.debug(this.id + ".onclickRating");
                 this.newvalue = count;
                 if (this.newvalue !== this.oldvalue) {
@@ -117,7 +114,7 @@ define([
                 }
 
                 this.displayImages(count);
-                for (i = 0; i < this.mouseoverArray.length; i++) {
+                for (var i = 0; i < this.mouseoverArray.length; i++) {
                     if (this.mouseoverArray[i].handlein){
                         this.disconnect(this.mouseoverArray[i].handlein);
                     }
@@ -129,13 +126,12 @@ define([
 
             mouseleaveEvent : function(showVote, event) {
                 logger.debug(this.id + ".mouseleaveEvent");
-                this.setMouseOver(showVote-1);
+                this.setMouseOver(showVote - 1);
             },
 
             uninitialize : function(){
-                var i;
                 logger.debug(this.id + ".uninitialize");
-                for (i = 0; i < this.mouseoverArray.length; i++){
+                for (var i = 0; i < this.mouseoverArray.length; i++){
                     if (this.mouseoverArray[i].handlein){
                         this.disconnect(this.mouseoverArray[i].handlein);
                     }
