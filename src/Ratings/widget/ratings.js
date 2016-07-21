@@ -113,7 +113,7 @@ define([
         },
 
         _getImagePath : function (img) {
-            return this.root + "/" + img;
+            return (this.root + (this.root.indexOf("localhost") !== -1 ? "/" : "" ) + img).split("?")[0]; // fix image path and remove cachebust
         },
 
         onclickRating : function(count, mxApp, event) {

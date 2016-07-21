@@ -98,11 +98,11 @@ define([
                 }
 
                 for (var j = 0; j <= iterator-1; j++) {
-                    domAttr.set(this.mouseoverArray[j].element, "src", this.root + "/" + this.mouseoverImage);
+                    domAttr.set(this.mouseoverArray[j].element, "src", this._getImagePath(this.mouseoverImage));
                 }
 
                 for (var k = 4; k > iterator-1; k--) {
-                    domAttr.set(this.mouseoverArray[k].element, "src", this.root + "/" + this.standardImage);
+                    domAttr.set(this.mouseoverArray[k].element, "src", this._getImagePath(this.standardImage));
                 }
             },
 
@@ -122,6 +122,10 @@ define([
                         this.disconnect(this.mouseoverArray[i].handleout);
                     }
                 }
+            },
+
+            _getImagePath : function (img) {
+                return (this.root + (this.root.indexOf("localhost") !== -1 ? "/" : "" ) + img).split("?")[0]; // fix image path and remove cachebust
             },
 
             mouseleaveEvent : function(showVote, event) {
