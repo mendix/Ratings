@@ -24,7 +24,6 @@ define([
             oldvalue : 0,
             newvalue : 0,
 
-            //summery : stub function, will be used or replaced by the client environment
             onChange : function(){
             },
 
@@ -48,12 +47,6 @@ define([
                     }
                     this.showCurrentValue();
                 }
-            },
-
-            _setDisabledAttr : function(value) {
-                logger.debug(this.id + "._setDisabledAttr");
-                //donothing, depends on widget configuration
-                //this.voteEnabled = !!value;
             },
 
             postCreate : function(){
@@ -148,6 +141,6 @@ define([
                 }
             }
         });
-
 });
+
 require(["Ratings/widget/ratings_nologic"]);

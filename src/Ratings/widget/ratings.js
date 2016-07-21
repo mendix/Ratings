@@ -47,14 +47,12 @@ define([
 
             var mxApp = this._contextObj;
 
-            /* CLEAR ALL NODES */
             domConstruct.empty(this.divNode);
 
             var showTotal = 0,
                 showCount = 0,
                 showVote = 0;
 
-            //retrieve and calculate the vote values
             showTotal = parseInt(mxApp.get(this.ratingsTotal), 10);
             showCount = parseInt(mxApp.get(this.ratingsCount), 10);
 
