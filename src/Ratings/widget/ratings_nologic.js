@@ -10,7 +10,7 @@ define([
         "use strict";
 
         return declare("Ratings.widget.ratings_nologic", [ _WidgetBase, _TemplatedMixin ], {
-
+            templateString : widgetTemplate,
             name : "",
             voteEnabled : false,
             standardImage : "",
