@@ -57,7 +57,7 @@ define([
             showCount = parseInt(mxApp.get(this.ratingsCount), 10);
 
             if (showCount === 0) {
-                showVote = 1;
+                showVote = 0;
             } else if (this.halfImage !== "") {
                 showVote = ((showTotal / showCount) * 2).toFixed() / 2;
             } else {
