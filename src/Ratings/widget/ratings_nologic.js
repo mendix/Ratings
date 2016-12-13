@@ -42,7 +42,7 @@ define([
                     this.setRating(this.newvalue);
                 } else {
                     if (this.voteEnabled === true) {//set default value
-                        this.newvalue = 1; //do not detach
+                        this.newvalue = 0; //do not detach
                         this.onChange();
                     }
                     this.showCurrentValue();
