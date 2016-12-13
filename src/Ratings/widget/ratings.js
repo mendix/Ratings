@@ -2,28 +2,29 @@ define([
     "dojo/_base/declare",
     "mxui/widget/_WidgetBase",
     "dijit/_TemplatedMixin",
+    "dojo/dom",
     "dojo/dom-attr",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "dojo/number",
     "dojo/_base/array",
     "dojo/text!Ratings/widget/templates/ratings.html"
-], function (declare, _WidgetBase, _TemplatedMixin, domAttr, domConstruct, lang, number, dojoArray, widgetTemplate) {
+], function(declare, _WidgetBase, _TemplatedMixin, dom, domAttr, domConstruct, lang, number, dojoArray, widgetTemplate) {
     "use strict";
 
-    return declare("Ratings.widget.ratings", [ _WidgetBase, _TemplatedMixin ], {
+    return declare("Ratings.widget.ratings", [_WidgetBase, _TemplatedMixin], {
 
-        templateString : widgetTemplate,
+        templateString: widgetTemplate,
 
-        divNode : "",
-        attrValues : null,
-        hasVoted : true,
-        connectArray : null,
-        mouseoverArray : null,
-        root : "",
-        ratingsListEvent : "",
-        pathAttr : "",
-        pathName : "",
+        divNode: "",
+        attrValues: null,
+        hasVoted: true,
+        connectArray: null,
+        mouseoverArray: null,
+        root: "",
+        ratingsListEvent: "",
+        pathAttr: "",
+        pathName: "",
 
         standardImage: null,
         mouseoverImage: null,
@@ -31,7 +32,7 @@ define([
 
         _contextObj: null,
 
-        postCreate : function(){
+        postCreate: function() {
             logger.debug(this.id + ".postCreate");
             this.root = window.mx.appUrl;
 
@@ -42,7 +43,7 @@ define([
             this.pathName = this.voteName.split("/");
         },
 
-        showRatings : function(callback){
+        showRatings: function(callback) {
             logger.debug(this.id + ".showRatings");
 
             var mxApp = this._contextObj;
@@ -64,13 +65,15 @@ define([
                 showVote = number.round((showTotal / showCount));
             }
 
-            var ratingsList = mxui.dom.create("ul");
+            var ratingsList = domConstruct.create("ul");
             if (this.voteEnabled === true) {
                 this.ratingsListEvent = this.connect(ratingsList, "onmouseleave", lang.hitch(this, this.mouseleaveEvent, showVote));
             }
 
             for (var i = 1; i <= 5; i++) {
-                var imgNode = mxui.dom.create("img",{"class": "ratings_image"});
+                var imgNode = domConstruct.create("img", {
+                    "class": "ratings_image"
+                });
                 if (i > showVote) {
                     if (this.halfImage !== "" && (i - showVote === 0.5)) {
                         domAttr.set(imgNode, "src", this._getImagePath(this.halfImage));
@@ -80,21 +83,22 @@ define([
                 } else {
                     domAttr.set(imgNode, "src", this._getImagePath(this.mouseoverImage));
                 }
-                var ratingsLi = mxui.dom.create("li", imgNode);
+                var ratingsLi = domConstruct.create("li");
                 if (this.voteEnabled === true) {
-                    this.mouseoverArray[i-1] = {};
-                    this.mouseoverArray[i-1].handle = this.connect(imgNode, "onmouseenter", lang.hitch(this, this.mouseenterEvent, i));
-                    this.mouseoverArray[i-1].element = imgNode;
-                    this.connectArray[i-1] = this.connect(ratingsLi, "onclick", lang.hitch(this, this.onclickRating, i, mxApp));
+                    this.mouseoverArray[i - 1] = {};
+                    this.mouseoverArray[i - 1].handle = this.connect(imgNode, "onmouseenter", lang.hitch(this, this.mouseenterEvent, i));
+                    this.mouseoverArray[i - 1].element = imgNode;
+                    this.connectArray[i - 1] = this.connect(ratingsLi, "onclick", lang.hitch(this, this.onclickRating, i, mxApp));
                 }
+                ratingsLi.appendChild(imgNode);
                 ratingsList.appendChild(ratingsLi);
             }
             this.divNode.appendChild(ratingsList);
 
-            mendix.lang.nullExec(callback);
+            this._executeCallback(callback, "showRatings");
         },
 
-        setMouseOver : function (iterator) {
+        setMouseOver: function(iterator) {
             logger.debug(this.id + ".setMouseOver", iterator);
 
             for (var j = 0; j <= iterator; j++) {
@@ -110,11 +114,11 @@ define([
             }
         },
 
-        _getImagePath : function (img) {
-            return (this.root + (this.root.indexOf("localhost") !== -1 ? "/" : "" ) + img).split("?")[0]; // fix image path and remove cachebust
+        _getImagePath: function(img) {
+            return (this.root + (this.root.indexOf("localhost") !== -1 ? "/" : "") + img).split("?")[0]; // fix image path and remove cachebust
         },
 
-        onclickRating : function(count, mxApp, event) {
+        onclickRating: function(count, mxApp, event) {
             logger.debug(this.id + ".onclickRating");
 
             // user can click only once
@@ -127,15 +131,15 @@ define([
 
             // store the fact that the user has voted
             var currentUserName = mx.session.getUserName();
-            var xpathString = "//" + this.pathName[1] + "[" + this.pathName[2] + " = '" + currentUserName + "']"+"["+ this.pathName[0] + " = '" + mxApp.getGuid() +  "']";
+            var xpathString = "//" + this.pathName[1] + "[" + this.pathName[2] + " = '" + currentUserName + "']" + "[" + this.pathName[0] + " = '" + mxApp.getGuid() + "']";
 
             mx.data.get({
-                xpath    : xpathString,
-                callback : lang.hitch(this, this.commitRating, count, mxApp)
+                xpath: xpathString,
+                callback: lang.hitch(this, this.commitRating, count, mxApp)
             });
         },
 
-        commitRating : function (count, mxApp, mxVote) {
+        commitRating: function(count, mxApp, mxVote) {
             logger.debug(this.id + ".commitRating");
 
             var currentTotal = mxApp.get(this.ratingsTotal),
@@ -155,13 +159,13 @@ define([
             }
         },
 
-        createVote : function (user, vote, app, currentTotal, currentCount) {
+        createVote: function(user, vote, app, currentTotal, currentCount) {
             logger.debug(this.id + ".createVote");
 
             mx.data.create({
-                "entity"	: this.pathName[1],
-                "callback"	: lang.hitch(this,
-                    function (user, vote, app, currentTotal, currentCount, voteObject) {
+                "entity": this.pathName[1],
+                "callback": lang.hitch(this,
+                    function(user, vote, app, currentTotal, currentCount, voteObject) {
                         logger.debug(this.id + ".createVote created");
 
                         app.addReference(this.pathName[0], voteObject.getGuid());
@@ -180,58 +184,65 @@ define([
                     currentTotal,
                     currentCount
                 ),
-                "context"	: null
+                "context": null
             });
         },
 
-        _saveSequence: function (obj) {
+        _saveSequence: function(obj) {
             logger.debug(this.id + "._saveSequence, type: " + obj.getEntity());
             mx.data.save({
                 mxobj: obj,
-                callback: lang.hitch(this, function () {
+                callback: lang.hitch(this, function() {
                     logger.debug(this.id + "._saveSequence obj type " + obj.getEntity() + " saved");
                     mx.data.commit({
                         mxobj: obj,
-                        callback: lang.hitch(this, function () {
+                        callback: lang.hitch(this, function() {
                             logger.debug(this.id + "._saveSequence obj type " + obj.getEntity() + " committed");
                         }),
-                        error: lang.hitch(this, function (err) {
+                        error: lang.hitch(this, function(err) {
                             logger.error(this.id + "._saveSequence obj type " + obj.getEntity() + " commit error: ", err);
                         })
                     });
                 }),
-                error: lang.hitch(this, function (err) {
+                error: lang.hitch(this, function(err) {
                     logger.error(this.id + "._saveSequence obj type " + obj.getEntity() + " save error: ", err);
                 })
             });
         },
 
-        mouseenterEvent : function(enterIterator, event) {
+        mouseenterEvent: function(enterIterator, event) {
             logger.debug(this.id + ".mouseenterEvent");
             this.setMouseOver(enterIterator - 1);
         },
 
-        mouseleaveEvent : function(showVote, event) {
+        mouseleaveEvent: function(showVote, event) {
             logger.debug(this.id + ".mouseleaveEvent", showVote);
             this.setMouseOver(showVote - 1);
         },
 
-        update: function (obj, callback) {
+        update: function(obj, callback) {
             logger.debug(this.id + ".update");
             if (obj) {
                 this._contextObj = obj;
                 this.showRatings(callback);
             } else {
-                console.warm(this.id + ".update received empty context");
-                mendix.lang.nullExec(callback);
+                console.warn(this.id + ".update received empty context");
+                this._executeCallback(callback, "update");
             }
         },
 
-        uninitialize : function(){
+        uninitialize: function() {
             logger.debug(this.id + ".uninitialize");
             dojoArray.forEach(this.connectArray, this.disconnect);
             for (var i = 0; i < this.mouseoverArray.length; i++) {
                 this.disconnect(this.mouseoverArray[i].handle);
+            }
+        },
+
+        _executeCallback: function(cb, from) {
+            logger.debug(this.id + "._executeCallback" + (from ? " from " + from : ""));
+            if (cb && typeof cb === "function") {
+                cb();
             }
         }
     });

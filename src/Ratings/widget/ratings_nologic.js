@@ -2,11 +2,12 @@ define([
     "dojo/_base/declare",
     "mxui/widget/_WidgetBase",
     "dijit/_TemplatedMixin",
+    "dojo/dom-construct",
     "dojo/dom-attr",
     "dojo/dom-class",
     "dojo/_base/lang",
     "dojo/text!Ratings/widget/templates/ratings.html"
-], function (declare, _WidgetBase, _TemplatedMixin, domAttr, domClass, lang, widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, domConstruct, domAttr, domClass, lang, widgetTemplate) {
         "use strict";
 
         return declare("Ratings.widget.ratings_nologic", [ _WidgetBase, _TemplatedMixin ], {
@@ -55,14 +56,15 @@ define([
                 this.mouseoverArray = [];
 
                 domClass.add(this.domNode, "ratings_widget");
-                var ratingsList = mxui.dom.create("ul");
+                var ratingsList = domConstruct.create("ul");
 
                 if (this.voteEnabled === true) {
                     this.ratingsListEvent = this.connect(ratingsList, "onmouseleave", lang.hitch(this, this.showCurrentValue));
                 }
                 for (var i = 1; i <= 5; i++) {
-                    var imgNode = mxui.dom.create("img",{"class": "ratings_image"}),
-                        ratingsLi = mxui.dom.create("li", imgNode);
+                    var imgNode =domConstruct.create("img",{"class": "ratings_image"}),
+                        ratingsLi = domConstruct.create("li");
+                    ratingsLi.appendChild(imgNode);
 
                     this.mouseoverArray[i-1] = {};
                     this.mouseoverArray[i-1].element = imgNode;
