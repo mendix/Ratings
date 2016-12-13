@@ -1,12 +1,11 @@
 {
   "name": "Ratings",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "",
   "license": "",
   "author": "",
   "private": true,
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "del": "^2.2.2",
     "gulp": "^3.9.1",
