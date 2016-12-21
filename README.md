@@ -13,7 +13,7 @@ Every version comes with the option to turn the voting on or off. In either case
 Tracking how popular your [insert your entity here] are!
 
 ###Limitations
-- Can only vote from 1 to 5
+- Can only vote from 0 to 5
 - No support for 0.5 ratings.
 - Note that voting will commit the context object.
 
