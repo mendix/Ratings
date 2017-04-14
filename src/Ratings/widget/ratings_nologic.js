@@ -41,12 +41,15 @@ define([
                 this.newvalue = parseInt(value, 10);
                 if (this.newvalue > 0) {
                     this.setRating(this.newvalue);
-                } else {
+                } else if (this.mxcontext.getTrackObject()) {
+                    domClass.remove(this.domNode, "hidden");
                     if (this.voteEnabled === true) {//set default value
                         this.newvalue = 0; //do not detach
                         this.onChange();
                     }
                     this.showCurrentValue();
+                } else {
+                    domClass.add(this.domNode, "hidden");
                 }
             },
 
