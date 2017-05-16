@@ -42,5 +42,11 @@
                 <attributeType name="Integer"/>
             </attributeTypes>
         </property>
+        <property key="onChangeMicroflow" type="microflow" required="false">
+            <caption>On change microflow</caption>
+            <category>Behavior</category>
+            <description>Microflow to be executed when the rate is changed</description>
+            <returnType type="Void"/>
+        </property>
     </properties>
 </widget>
