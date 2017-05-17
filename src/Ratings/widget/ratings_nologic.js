@@ -43,7 +43,7 @@ define([
                 logger.debug(this.id + "._setValueAttr");
                 this.oldvalue = parseInt(value, 10);
                 this.newvalue = parseInt(value, 10);
-                if (this.newvalue > 0) {
+                if (this.newvalue >= 0) {
                     this.setRating(this.newvalue);
                 } else if (this.mxcontext.getTrackObject()) {
                     domClass.remove(this.domNode, "hidden");
