@@ -12,11 +12,15 @@ define([
 
         return declare("Ratings.widget.ratings_nologic", [ _WidgetBase, _TemplatedMixin ], {
             templateString : widgetTemplate,
-            name : "",
+
+            // Modeler properties
             voteEnabled : false,
             standardImage : "",
             mouseoverImage : "",
+            name : "",
+            onChangeMicroflow: "",
 
+            // Internal properties
             divNode : "",
             mouseoverArray : null,
             root : window.mx.appUrl,
@@ -39,7 +43,7 @@ define([
                 logger.debug(this.id + "._setValueAttr");
                 this.oldvalue = parseInt(value, 10);
                 this.newvalue = parseInt(value, 10);
-                if (this.newvalue > 0) {
+                if (this.newvalue >= 0) {
                     this.setRating(this.newvalue);
                 } else if (this.mxcontext.getTrackObject()) {
                     domClass.remove(this.domNode, "hidden");
@@ -109,6 +113,7 @@ define([
                 this.newvalue = count;
                 if (this.newvalue !== this.oldvalue) {
                     this.onChange();
+                    this._callMicroflow(this.onChangeMicroflow);
                 }
 
                 this.displayImages(count);
@@ -129,6 +134,19 @@ define([
             mouseleaveEvent : function(showVote, event) {
                 logger.debug(this.id + ".mouseleaveEvent");
                 this.setMouseOver(showVote - 1);
+            },
+
+            _callMicroflow: function(microflowName) {
+                if (microflowName) {
+                    window.mx.ui.action(microflowName, {
+                        context: this.mxcontext,
+                        origin: this.mxform,
+                        callback: function() { },
+                        error: function(error) {
+                            window.mx.ui.error("Error executing microflow: " + microflowName + " " + error.message);
+                        }
+                    });
+                }
             },
 
             uninitialize : function(){
